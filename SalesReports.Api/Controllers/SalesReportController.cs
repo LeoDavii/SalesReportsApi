@@ -28,8 +28,23 @@ public class SalesReportController(ISalesReportHandler salesReportHandler, ILogg
         }
         catch (ArgumentException ex)
         {
-            logger.LogError(ex, "Something went wrong while generating sales report.");
+            LogReportError(ex);
             return BadRequest(ex.Message);
         }
+        catch (InvalidCastException ex)
+        {
+            LogReportError(ex);
+            return BadRequest(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            LogReportError(ex);
+            return StatusCode(500, "Something went wrong while generating sales report.");
+        }
+    }
+
+    private void LogReportError(Exception ex)
+    {
+        logger.LogError(ex, "Something went wrong while generating sales report.");
     }
 }

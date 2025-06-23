@@ -37,12 +37,12 @@ public class CsvParserService(ILogger<CsvParserService> logger, IMedianCalculato
         catch (ArgumentException ex)
         {
             logger.LogError(ex, "The provided file is not valid!");
-            throw new InvalidDataException($"Error on line: {_currentRow}, {ex.Message}");
+            throw new ArgumentException($"Error on line: {_currentRow}, {ex.Message}");
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "An error has occurred while reading the provided file");
-            throw;
+            logger.LogError(ex, "Something went wrong trying to parse file.");
+            throw new InvalidCastException("The provided file is not valid!");
         }
     }
 
