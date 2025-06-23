@@ -11,8 +11,9 @@
 
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.17" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.6" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
-    <PackageReference Include="Moq" Version="4.20.72" />
     <PackageReference Include="NUnit" Version="3.14.0" />
     <PackageReference Include="NUnit.Analyzers" Version="3.9.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
@@ -21,7 +22,6 @@
   <ItemGroup>
     <ProjectReference Include="..\SalesReports.Api\SalesReports.Api.csproj" />
     <ProjectReference Include="..\SalesReports.App\SalesReports.App.csproj" />
-    <ProjectReference Include="..\SalesReports.Domain\SalesReports.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
