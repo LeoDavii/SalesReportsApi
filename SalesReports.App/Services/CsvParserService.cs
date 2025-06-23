@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using SalesReports.App.Model;
 using SalesReports.Domain.Entities;
-using SalesReports.Domain.Services;
 using System.Globalization;
 
 namespace SalesReports.App.Services;
@@ -32,6 +31,8 @@ public class CsvParserService(ILogger<CsvParserService> logger, IMedianCalculato
             }
 
             EnrichReportWithMedianUnitCost(salesReport);
+
+            return salesReport;
         }
         catch (ArgumentException ex)
         {
@@ -66,7 +67,7 @@ public class CsvParserService(ILogger<CsvParserService> logger, IMedianCalculato
     private void ProcessRecord(SalesReport salesReport, CsvReader csv)
     {
         SaleRecordModel salesModel = GetRecord(csv);
-        salesReport.AddSale(salesModel.RegionDescription, salesModel.TotalRevenue, salesModel.OrderDate);
+        salesReport.AddSale(salesModel.Region, salesModel.TotalRevenue, salesModel.OrderDate);
         medianCalculatorService.AddValue(salesModel.UnitCost);
     }
     private static SaleRecordModel GetRecord(CsvReader csv)

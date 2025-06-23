@@ -5,9 +5,9 @@ using SalesReports.App.Services;
 using SalesReports.Domain.Entities;
 
 namespace SalesReports.App.Handlers;
-public class SalesReportHandler(ICsvFileValidatorService csvFileValidator, 
-                                ICsvParserService csvParserService, 
-                                ILogger<SalesReportHandler> logger)
+public class SalesReportHandler(ICsvFileValidatorService csvFileValidator,
+                                ICsvParserService csvParserService,
+                                ILogger<SalesReportHandler> logger) : ISalesReportHandler
 {
     public SalesReportResponseDto Handle(IFormFile file)
     {

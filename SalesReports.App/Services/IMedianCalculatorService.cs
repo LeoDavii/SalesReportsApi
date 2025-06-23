@@ -1,4 +1,4 @@
-﻿namespace SalesReports.Domain.Services;
+﻿namespace SalesReports.App.Services;
 public interface IMedianCalculatorService
 {
     void AddValue(decimal value);

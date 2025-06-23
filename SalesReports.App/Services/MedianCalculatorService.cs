@@ -1,4 +1,4 @@
-﻿namespace SalesReports.Domain.Services;
+﻿namespace SalesReports.App.Services;
 public class MedianCalculatorService : IMedianCalculatorService
 {
     private readonly PriorityQueue<decimal, decimal> _maxHeap;

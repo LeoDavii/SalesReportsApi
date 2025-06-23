@@ -1,31 +1,23 @@
 ﻿using CsvHelper.Configuration.Attributes;
 
 namespace SalesReports.App.Model;
-public record SaleRecordModel
+public class SaleRecordModel
 {
     [Name("Region")]
-    public string RegionDescription { get; private set; }
+    public string Region { get; set; } = string.Empty;
     
     [Name("Unit Cost")]
-    public decimal UnitCost { get; private set; }
+    public decimal UnitCost { get; set; }
     
     [Name("Order Date")]
-    public DateTime OrderDate { get; private set; }
+    public DateTime OrderDate { get; set; }
     
     [Name("Total Revenue")]
-    public decimal TotalRevenue { get; private set; }
-
-    public SaleRecordModel(string regionDescription, decimal unitCost, DateTime orderDate, decimal totalRevenue)
-    {
-        RegionDescription = regionDescription;
-        UnitCost = unitCost;
-        OrderDate = orderDate;
-        TotalRevenue = totalRevenue;
-    }
+    public decimal TotalRevenue { get; set; }
 
     public void ValidateAndThrow()
     {
-        if (string.IsNullOrWhiteSpace(RegionDescription))
+        if (string.IsNullOrWhiteSpace(Region))
             throw new ArgumentException("Region Description is required");
 
         if (UnitCost <= 0)
