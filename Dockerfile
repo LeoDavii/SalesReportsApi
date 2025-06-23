@@ -5,6 +5,7 @@ COPY SalesReports.sln ./
 COPY SalesReports.Api/SalesReports.Api.csproj ./SalesReports.Api/
 COPY SalesReports.App/SalesReports.App.csproj ./SalesReports.App/
 COPY SalesReports.Domain/SalesReports.Domain.csproj ./SalesReports.Domain/
+COPY SalesReports.Tests.Integration/SalesReports.Tests.Integration.csproj ./SalesReports.Tests.Integration/
 
 RUN dotnet restore
 
