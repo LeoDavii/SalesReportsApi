@@ -23,8 +23,7 @@ A Web API designed to provide comprehensive sales reports by parsing and analyzi
 
 ## Quick Start
 
-The template file is in the project root directory "SalesRecords.csv"
-To run the application locally, simply execute the following command in the project root directory:
+The template file is in the project root directory "SalesRecords.csv". To run the application locally, simply execute the following command in the project root directory:
 
 ```bash
 docker-compose up -d
