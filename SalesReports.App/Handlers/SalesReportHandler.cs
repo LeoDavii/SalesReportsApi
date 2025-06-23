@@ -2,11 +2,11 @@
 using Microsoft.Extensions.Logging;
 using SalesReports.App.DTOs;
 using SalesReports.App.Services;
+using SalesReports.Domain.Entities;
 
 namespace SalesReports.App.Handlers;
 public class SalesReportHandler(ICsvFileValidatorService csvFileValidator, 
                                 ICsvParserService csvParserService, 
-                                ISalesReportService salesReportService,
                                 ILogger<SalesReportHandler> logger)
 {
     public SalesReportResponseDto Handle(IFormFile file)
@@ -14,14 +14,12 @@ public class SalesReportHandler(ICsvFileValidatorService csvFileValidator,
         logger.LogInformation("Generating report...");
 
         csvFileValidator.ValidateAndThrowCsvFile(file);
-        var sales = csvParserService.ParseToSalesRecords(file);
-
-        var salesReport = salesReportService.GetSalesReport(sales);
+        var salesReport = csvParserService.ParseCsvToSalesReport(file);
 
         return MapReportToDto(salesReport);
     }
 
-    private static SalesReportResponseDto MapReportToDto(Domain.Entities.SalesReport salesReport)
+    private static SalesReportResponseDto MapReportToDto(SalesReport salesReport)
     {
         return new()
         {

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
-using SalesReports.App.Model;
+using SalesReports.Domain.Entities;
 
 namespace SalesReports.App.Services;
 public interface ICsvParserService
 {
-    IEnumerable<SaleRecordModel> ParseToSalesRecords(IFormFile file);
+    SalesReport ParseCsvToSalesReport(IFormFile file);
 }

@@ -43,6 +43,9 @@ public class SalesReport
 
     private void UpdateDateRange(DateTime orderDate)
     {
+        if (orderDate == default || orderDate > DateTime.Now)
+            throw new ArgumentException("Order Date must be a valid date and cannot be in the future");
+
         if (FirstOrderDate == default || orderDate < FirstOrderDate)
             FirstOrderDate = orderDate;
 

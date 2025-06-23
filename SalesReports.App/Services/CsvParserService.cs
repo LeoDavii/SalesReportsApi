@@ -2,19 +2,21 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using SalesReports.App.Model;
+using SalesReports.Domain.Entities;
+using SalesReports.Domain.Services;
 using System.Globalization;
 
 namespace SalesReports.App.Services;
-public class CsvParserService(ILogger<CsvParserService> logger) : ICsvParserService
+public class CsvParserService(ILogger<CsvParserService> logger, IMedianCalculatorService medianCalculatorService) : ICsvParserService
 {
     private int _recordCount = 0;
     private int _currentRow = 0;
 
-    public IEnumerable<SaleRecordModel> ParseToSalesRecords(IFormFile file)
+    public SalesReport ParseCsvToSalesReport(IFormFile file)
     {
         try
         {
-            var sales = new List<SaleRecordModel>();
+            SalesReport salesReport = new();
 
             using var stream = file.OpenReadStream();
             using var reader = new StreamReader(stream);
@@ -25,14 +27,11 @@ public class CsvParserService(ILogger<CsvParserService> logger) : ICsvParserServ
 
             while (csv.Read())
             {
-                _recordCount++;
-                _currentRow = GetSafeRowNumber(csv);
-
-                var salesModel = csv.GetRecord<SaleRecordModel>();
-                salesModel.ValidateAndThrow();
+                CountRow(csv);
+                ProcessRecord(salesReport, csv);
             }
 
-            return sales;
+            EnrichReportWithMedianUnitCost(salesReport);
         }
         catch (ArgumentException ex)
         {
@@ -46,6 +45,12 @@ public class CsvParserService(ILogger<CsvParserService> logger) : ICsvParserServ
         }
     }
 
+    private void CountRow(CsvReader csv)
+    {
+        _recordCount++;
+        _currentRow = GetSafeRowNumber(csv);
+    }
+
     private int GetSafeRowNumber(CsvReader csv)
     {
         try
@@ -57,4 +62,29 @@ public class CsvParserService(ILogger<CsvParserService> logger) : ICsvParserServ
             return _recordCount + 1;
         }
     }
+
+    private void ProcessRecord(SalesReport salesReport, CsvReader csv)
+    {
+        SaleRecordModel salesModel = GetRecord(csv);
+        salesReport.AddSale(salesModel.RegionDescription, salesModel.TotalRevenue, salesModel.OrderDate);
+        medianCalculatorService.AddValue(salesModel.UnitCost);
+    }
+    private static SaleRecordModel GetRecord(CsvReader csv)
+    {
+        var salesModel = csv.GetRecord<SaleRecordModel>();
+        salesModel.ValidateAndThrow();
+        return salesModel;
+    }
+
+    private void EnrichReportWithMedianUnitCost(SalesReport salesReport)
+    {
+        var medianUnitCost = medianCalculatorService.GetMedian();
+
+        if (!medianUnitCost.HasValue)
+            throw new ArgumentException("Unable to calculate Median Unit Cost");
+
+        salesReport.SetMedianUnitCost(medianUnitCost.Value);
+    }
+
+
 }

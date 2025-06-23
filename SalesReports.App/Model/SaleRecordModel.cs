@@ -1,9 +1,18 @@
-﻿namespace SalesReports.App.Model;
+﻿using CsvHelper.Configuration.Attributes;
+
+namespace SalesReports.App.Model;
 public record SaleRecordModel
 {
+    [Name("Region")]
     public string RegionDescription { get; private set; }
+    
+    [Name("Unit Cost")]
     public decimal UnitCost { get; private set; }
+    
+    [Name("Order Date")]
     public DateTime OrderDate { get; private set; }
+    
+    [Name("Total Revenue")]
     public decimal TotalRevenue { get; private set; }
 
     public SaleRecordModel(string regionDescription, decimal unitCost, DateTime orderDate, decimal totalRevenue)
