@@ -41,7 +41,7 @@ public class CsvParserService(ILogger<CsvParserService> logger, IMedianCalculato
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Something went wrong trying to parse file.");
+            logger.LogError(ex, "Failed to parse the file");
             throw new InvalidCastException("The provided file is not valid!");
         }
     }
